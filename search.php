@@ -20,6 +20,8 @@
                     $stmt->bind_param("s", $search);
                     $stmt->execute();
                     $result = $stmt->get_result();
+                    $stmt->close();
+                    mysqli_close(); 
                     if($result->num_rows == 0){
                         echo "<h1>No results!</h1>";
                     }else{
