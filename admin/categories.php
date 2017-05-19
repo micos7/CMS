@@ -29,9 +29,7 @@
                                 if(!$st){
                                     printf("Error: %s.\n", $st->error);
                                 }
-                                
 
-                                $st->close();
 
                             }
                         }
@@ -56,7 +54,6 @@
                         <?php 
                             $query = "SELECT * FROM categories";
                             $select_categories = mysqli_query($connection,$query);
-                            mysqli_close($connection); 
                         
                         ?>
                         <table class="table table-bordered table-hover">
@@ -67,14 +64,33 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php while($row = mysqli_fetch_assoc($select_categories)){
+                            
+                            <?php
+                            // Find all categories
+                             while($row = mysqli_fetch_assoc($select_categories)){
                             $cat_id = $row['cat_id'];
                             $cat_title = $row['cat_title'];
                             echo "<tr>";
                             echo "<td>{$cat_id}</td>";
                             echo "<td>{$cat_title}</td>";
+                            echo "<td><a href='categories.php?delete={$cat_id}'>Delete</a></td>";
                             echo "</tr>";
-                            } ?>
+                            } 
+                            ?>
+
+                            <?php
+                            // Delete category
+                             if(isset($_GET['delete'])){
+                                 $del_cat_id = $_GET['delete'];
+                                 $dst = $connection->prepare("DELETE FROM categories WHERE cat_id=?");
+                                $dst->bind_param("s", $del_cat_id);
+                                $dst->execute();
+                                if(!$dst){
+                                    printf("Error: %s.\n", $dst->error);
+                                }
+                                header('Location: categories.php');
+                             }
+                            ?>
                                 
                                 
                             </tbody>
