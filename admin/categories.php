@@ -39,7 +39,7 @@
 
 
                         <form method="post">
-                            <div class="form-group" method="post">
+                            <div class="form-group">
                             <label for="cat_title">Add Category</label>
                             <input type="text" name="cat_title" class="form-control" >
                             </div>
@@ -47,6 +47,13 @@
                             <input class="btn btn-primary" type="submit" name="submit" value="Add Category">
                             </div>
                         </form>
+                        <?php 
+                        if(isset($_GET['edit'])){
+                            include('includes/update_categories.php'); 
+                        }
+                        
+                        ?>
+                        
                         </div>
 
                         <div class="col-xs-6">
@@ -74,6 +81,7 @@
                             echo "<td>{$cat_id}</td>";
                             echo "<td>{$cat_title}</td>";
                             echo "<td><a href='categories.php?delete={$cat_id}'>Delete</a></td>";
+                            echo "<td><a href='categories.php?edit={$cat_id}'>Edit</a></td>";
                             echo "</tr>";
                             } 
                             ?>
@@ -83,7 +91,7 @@
                              if(isset($_GET['delete'])){
                                  $del_cat_id = $_GET['delete'];
                                  $dst = $connection->prepare("DELETE FROM categories WHERE cat_id=?");
-                                $dst->bind_param("s", $del_cat_id);
+                                $dst->bind_param("i", $del_cat_id);
                                 $dst->execute();
                                 if(!$dst){
                                     printf("Error: %s.\n", $dst->error);
