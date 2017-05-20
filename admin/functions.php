@@ -1,5 +1,11 @@
 <?php
 
+function confirmQuery($result){
+    if(!$result){
+        printf("Error: %s.\n", $dst->error);
+    }
+}
+
 function insert_categories(){
     global $connection;
     if(isset($_POST['submit'])){

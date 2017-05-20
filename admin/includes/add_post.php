@@ -1,7 +1,7 @@
 <?php
 if(isset($_POST['create_post'])){
     $post_title = $_POST['title'];
-    $post_category_id = $_POST['post_category'];
+    $post_category_id = 2;
     $post_author = $_POST['author'];
     $post_status = $_POST['post_status'];
     
@@ -15,6 +15,18 @@ if(isset($_POST['create_post'])){
     $post_comment_count = 0;
 
     move_uploaded_file($post_image_temp,"../images/$post_image");
+
+
+       $ap = $connection->prepare("INSERT INTO posts(post_category_id, post_title, post_author, post_date, post_image, post_content,
+       post_tags, post_comment_count, post_status)VALUES(?,?,?,now(), ?,?,?, ?,?)");
+                                $ap->bind_param("ssssssis", $post_category_id,$post_title,$post_author,$post_image,$post_content,
+                                $post_tags,$post_comment_count,$post_status);
+                                $ap->execute();
+                                confirmQuery($ap);
+       
+       
+
+       echo "<p class='bg-success'>Post Created: " . "<a href='posts.php'>View Post</a></p>";
 }
 
 
