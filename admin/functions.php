@@ -2,7 +2,7 @@
 
 function confirmQuery($result){
     if(!$result){
-        printf("Error: %s.\n", $dst->error);
+        printf("Error: %s.\n", $result->error);
     }
 }
 
