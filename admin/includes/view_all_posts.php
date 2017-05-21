@@ -33,7 +33,25 @@
                             echo "<td>$post_id </td>";
                             echo "<td>$post_title </td>";
                             echo "<td>$post_author </td>";
-                            echo "<td>$post_category_id </td>";
+
+                    //TODO - change to a JOIN in the main query
+                    $ct = $connection->prepare("SELECT * FROM categories WHERE cat_id=?");
+                    $ct->bind_param("i", $post_category_id);
+                    $ct->execute();
+                    $post_ct = $ct->get_result();
+                    if(!$ct){
+                        printf("Error: %s.\n", $ep->error);
+                    }
+                     
+                    while($row = $post_ct->fetch_assoc()){
+                        $cat_id = $row['cat_id'];
+                        $cat_title = $row['cat_title'];
+                    }
+
+
+
+
+                            echo "<td>$cat_title </td>";
                             echo "<td>$post_status </td>";
                             echo "<td><img width='100' src='../images/$post_image'> </td>";
                             echo "<td>$post_tags </td>";
