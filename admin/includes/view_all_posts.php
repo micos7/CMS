@@ -39,6 +39,7 @@
                             echo "<td>$post_tags </td>";
                             echo "<td>$post_comment_count </td>";
                             echo "<td>$post_date </td>";
+                            echo "<td><a href='posts.php?delete=$post_id'>Delete</a></td>";
                             echo "</tr>";
 
             }
@@ -57,3 +58,20 @@
                                 </td>
                             </tbody>
                         </table>
+
+<?php
+
+if(isset($_GET['delete'])){
+$del_post_id = $_GET['delete'];
+
+ $dpi = $connection->prepare("DELETE FROM posts WHERE post_id=?");
+        $dpi->bind_param("i", $del_post_id);
+        $dpi->execute();
+        if(!$dpi){
+            printf("Error: %s.\n", $dpi->error);
+        }
+        header('Location: posts.php');
+}
+
+
+ ?>
