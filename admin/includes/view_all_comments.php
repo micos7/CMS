@@ -10,7 +10,6 @@
                                     <th>Date</th>
                                     <th>Approve</th>
                                     <th>Unapprove</th>
-                                    <th>Edit</th>
                                     <th>Delete</th>
                                 </tr>
                             </thead>
@@ -54,10 +53,9 @@
 
                             echo "<td><a href='../post.php?p_id=$post_id'>$post_title</a></td>";
                             echo "<td>$comment_date </td>";
-                            echo "<td><a href='posts.php?source=edit_post&p_id=$post_id'>Approve</a></td>";
-                            echo "<td><a href='posts.php?delete=$post_id'>Unappove</a></td>";
-                            echo "<td><a href='posts.php?source=edit_post&p_id=$post_id'>Edit</a></td>";
-                            echo "<td><a href='posts.php?delete=$post_id'>Delete</a></td>";
+                            echo "<td><a href='comments.php?source=edit_post&p_id=$comment_id'>Approve</a></td>";
+                            echo "<td><a href='comments.php?delete=$comment_id'>Unappove</a></td>";
+                            echo "<td><a href='comments.php?delete=$comment_id'>Delete</a></td>";
                             echo "</tr>";
 
              }
@@ -70,15 +68,15 @@
 <?php
 
 if(isset($_GET['delete'])){
-$del_post_id = $_GET['delete'];
+$del_comment_id = $_GET['delete'];
 
- $dpi = $connection->prepare("DELETE FROM posts WHERE post_id=?");
-        $dpi->bind_param("i", $del_post_id);
+ $dpi = $connection->prepare("DELETE FROM comments WHERE comment_id=?");
+        $dpi->bind_param("i", $del_comment_id);
         $dpi->execute();
         if(!$dpi){
             printf("Error: %s.\n", $dpi->error);
         }
-        header('Location: posts.php');
+        header('Location: comments.php');
 }
 
 
