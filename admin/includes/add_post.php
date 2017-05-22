@@ -12,15 +12,15 @@ if(isset($_POST['create_post'])){
     
     $post_tags = $_POST['post_tags'];
     $post_content = $_POST['post_content'];
-    $post_comment_count = 0;
+    //$post_comment_count = 0;
 
     move_uploaded_file($post_image_temp,"../images/$post_image");
 
 
        $ap = $connection->prepare("INSERT INTO posts(post_category_id, post_title, post_author, post_date, post_image, post_content,
-       post_tags, post_comment_count, post_status)VALUES(?,?,?,now(), ?,?,?, ?,?)");
-                                $ap->bind_param("ssssssis", $post_category_id,$post_title,$post_author,$post_image,$post_content,
-                                $post_tags,$post_comment_count,$post_status);
+       post_tags, post_status)VALUES(?,?,?,now(), ?,?,?,?)");
+                                $ap->bind_param("sssssss", $post_category_id,$post_title,$post_author,$post_image,$post_content,
+                                $post_tags,$post_status);
                                 $ap->execute();
                                 confirmQuery($ap);
        
