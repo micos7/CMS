@@ -53,8 +53,8 @@
 
                             echo "<td><a href='../post.php?p_id=$post_id'>$post_title</a></td>";
                             echo "<td>$comment_date </td>";
-                            echo "<td><a href='comments.php?source=edit_post&p_id=$comment_id'>Approve</a></td>";
-                            echo "<td><a href='comments.php?delete=$comment_id'>Unappove</a></td>";
+                            echo "<td><a href='comments.php?approve=$comment_id'>Approve</a></td>";
+                            echo "<td><a href='comments.php?unapprove=$comment_id'>Unapprove</a></td>";
                             echo "<td><a href='comments.php?delete=$comment_id'>Delete</a></td>";
                             echo "</tr>";
 
@@ -66,6 +66,30 @@
                         </table>
 
 <?php
+
+if(isset($_GET['unapprove'])){
+$status_comment_id = $_GET['unapprove'];
+
+ $dpi = $connection->prepare("UPDATE  comments SET comment_status ='unapprove'  WHERE comment_id=?");
+        $dpi->bind_param("i", $status_comment_id);
+        $dpi->execute();
+        if(!$dpi){
+            printf("Error: %s.\n", $dpi->error);
+        }
+        header('Location: comments.php');
+}
+
+if(isset($_GET['approve'])){
+$status_comment_id = $_GET['approve'];
+
+ $dpi = $connection->prepare("UPDATE  comments SET comment_status ='approve'  WHERE comment_id=?");
+        $dpi->bind_param("i", $status_comment_id);
+        $dpi->execute();
+        if(!$dpi){
+            printf("Error: %s.\n", $dpi->error);
+        }
+        header('Location: comments.php');
+}
 
 if(isset($_GET['delete'])){
 $del_comment_id = $_GET['delete'];
