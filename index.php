@@ -13,7 +13,9 @@
             <div class="col-md-8">
 
             <?php 
-                $query = "SELECT * FROM posts";
+
+            
+                $query = "SELECT * FROM posts WHERE post_status='published' ";
                 $select_all_posts = mysqli_query($connection,$query);
 
                 while($row = mysqli_fetch_assoc($select_all_posts)){
@@ -24,6 +26,11 @@
                     $post_image = $row['post_image'];
                     $post_content = substr($row['post_content'],0,100);
                     $post_tags = $row['post_tags'];
+
+                    if($row['post_status'] !== 'published'){
+
+                        echo"<h1>No post here,sorry!</h1>";
+                    } else {
                 
                 ?>
 
@@ -48,7 +55,7 @@
 
                 <hr>
 
-                <?php } ?>
+                <?php } }?>
 
             </div>
 
