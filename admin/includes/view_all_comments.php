@@ -6,7 +6,7 @@
                                     <th>Comment</th>
                                     <th>Email</th>
                                     <th>Status</th>
-                                    <th>In Response</th>
+                                    <th>In Response to</th>
                                     <th>Date</th>
                                     <th>Approve</th>
                                     <th>Unapprove</th>
@@ -33,28 +33,26 @@
                             echo "<tr>";
                             echo "<td>$comment_id </td>";
                             echo "<td>$comment_author </td>";
-
-                    //TODO - change to a JOIN in the main query
-                    // $ct = $connection->prepare("SELECT * FROM categories WHERE cat_id=?");
-                    // $ct->bind_param("i", $post_category_id);
-                    // $ct->execute();
-                    // $post_ct = $ct->get_result();
-                    // if(!$ct){
-                    //     printf("Error: %s.\n", $ep->error);
-                    // }
-                     
-                    // while($row = $post_ct->fetch_assoc()){
-                    //     $cat_id = $row['cat_id'];
-                    //     $cat_title = $row['cat_title'];
-                    // }
-
-
-
-
                             echo "<td>$comment_content </td>";
                             echo "<td>$comment_email </td>";
                             echo "<td>$comment_status </td>";
-                            echo "<td>$comment_post_id </td>";
+
+
+                    $ct = $connection->prepare("SELECT * FROM posts WHERE post_id=?");
+                    $ct->bind_param("i", $comment_post_id);
+                    $ct->execute();
+                    $post_ct = $ct->get_result();
+                    if(!$ct){
+                        printf("Error: %s.\n", $ep->error);
+                    }
+                     
+                    while($row = $post_ct->fetch_assoc()){
+                        $post_id = $row['post_id'];
+                        $post_title = $row['post_title'];
+                    }
+
+
+                            echo "<td><a href='../post.php?p_id=$post_id'>$post_title</a></td>";
                             echo "<td>$comment_date </td>";
                             echo "<td><a href='posts.php?source=edit_post&p_id=$post_id'>Approve</a></td>";
                             echo "<td><a href='posts.php?delete=$post_id'>Unappove</a></td>";
