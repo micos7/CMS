@@ -70,7 +70,7 @@
 if(isset($_GET['unapprove'])){
 $status_comment_id = $_GET['unapprove'];
 
- $dpi = $connection->prepare("UPDATE  comments SET comment_status ='unapprove'  WHERE comment_id=?");
+ $dpi = $connection->prepare("UPDATE  comments SET comment_status ='unapproved'  WHERE comment_id=?");
         $dpi->bind_param("i", $status_comment_id);
         $dpi->execute();
         if(!$dpi){
@@ -82,7 +82,7 @@ $status_comment_id = $_GET['unapprove'];
 if(isset($_GET['approve'])){
 $status_comment_id = $_GET['approve'];
 
- $dpi = $connection->prepare("UPDATE  comments SET comment_status ='approve'  WHERE comment_id=?");
+ $dpi = $connection->prepare("UPDATE  comments SET comment_status ='approved'  WHERE comment_id=?");
         $dpi->bind_param("i", $status_comment_id);
         $dpi->execute();
         if(!$dpi){
