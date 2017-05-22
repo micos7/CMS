@@ -64,6 +64,23 @@
 
 
                  <!-- Blog Comments -->
+                 <?php
+                 if(isset($_POST['create_comment'])){
+                      $post_id = $_GET['p_id'];
+
+                    $comment_author = $_POST['comment_author'];
+                    $comment_email = $_POST['comment_email'];
+                    $comment_content = $_POST['comment_content'];
+                    $comment_status = 'unapproved';
+
+                      $pc = $connection->prepare("INSERT INTO comments(comment_post_id, comment_author,comment_email, comment_content,
+       comment_status,comment_date)VALUES(?,?, ?,?,?,now())");
+                                $pc->bind_param("issss", $post_id,$comment_author,$comment_email,$comment_content,$comment_status);
+                                $pc->execute();
+                 }
+                 
+                 
+                 ?>
 
                 <!-- Comments Form -->
                 <div class="well">
