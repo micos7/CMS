@@ -43,10 +43,15 @@ if(isset($_POST['edit_user'])){
     //move_uploaded_file($post_image_temp,"../images/$post_image");
 
 
-       $ap = $connection->prepare("INSERT INTO users(user_firstname, user_lastname, user_role, username, user_email, user_password)VALUES(?,?,?,?,?,?)");
-                                $ap->bind_param("ssssss", $user_firstname,$user_lastname,$user_role,$username,$user_email,$user_password);
-                                $ap->execute();
-                                confirmQuery($ap);
+
+
+        $dpi = $connection->prepare("UPDATE  users SET user_firstname =?,user_lastname=?,user_role=?,username=?,user_email=?,user_password =?
+          WHERE user_id=?");
+           $dpi->bind_param("ssssssi", $user_firstname,$user_lastname,$user_role,$username,$user_email,$user_password,$user_id);
+        $dpi->execute();
+        if(!$dpi){
+            printf("Error: %s.\n", $dpi->error);
+        }
        
        
 
