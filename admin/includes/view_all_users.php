@@ -49,8 +49,8 @@
                     // }
 
 
-                            echo "<td><a href='comments.php?approve='>Approve</a></td>";
-                            echo "<td><a href='comments.php?unapprove='>Unapprove</a></td>";
+                            echo "<td><a href='users.php?change_to_admin=$user_id'>Admin</a></td>";
+                            echo "<td><a href='users.php?change_to_sub=$user_id'>Subscriber</a></td>";
                             echo "<td><a href='users.php?delete=$user_id'>Delete</a></td>";
                             echo "</tr>";
 
@@ -63,28 +63,28 @@
 
 <?php
 
-if(isset($_GET['unapprove'])){
-$status_comment_id = $_GET['unapprove'];
+if(isset($_GET['change_to_admin'])){
+$user_id = $_GET['change_to_admin'];
 
- $dpi = $connection->prepare("UPDATE  comments SET comment_status ='unapproved'  WHERE comment_id=?");
-        $dpi->bind_param("i", $status_comment_id);
+ $dpi = $connection->prepare("UPDATE  users SET user_role ='admin'  WHERE user_id=?");
+        $dpi->bind_param("i", $user_id);
         $dpi->execute();
         if(!$dpi){
             printf("Error: %s.\n", $dpi->error);
         }
-        header('Location: comments.php');
+        header('Location: users.php');
 }
 
-if(isset($_GET['approve'])){
-$status_comment_id = $_GET['approve'];
+if(isset($_GET['change_to_sub'])){
+$user_id = $_GET['change_to_sub'];
 
- $dpi = $connection->prepare("UPDATE  comments SET comment_status ='approved'  WHERE comment_id=?");
-        $dpi->bind_param("i", $status_comment_id);
+ $dpi = $connection->prepare("UPDATE  users SET user_role ='subscriber'  WHERE user_id=?");
+        $dpi->bind_param("i", $user_id);
         $dpi->execute();
         if(!$dpi){
             printf("Error: %s.\n", $dpi->error);
         }
-        header('Location: comments.php');
+        header('Location: users.php');
 }
 
 if(isset($_GET['delete'])){
