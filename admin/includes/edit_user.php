@@ -1,118 +1,115 @@
-<?php 
-$edit_post_id = $_GET['p_id'] ? $_GET['p_id'] : '';
-$ep = $connection->prepare("SELECT * FROM posts WHERE post_id=?");
-                    $ep->bind_param("i", $edit_post_id);
-                    $ep->execute();
-                    $post_edit = $ep->get_result();
-                    if(!$ep){
-                        printf("Error: %s.\n", $ep->error);
-                    }
+<?php
+if(isset($_GET['edit_user'])){
+    $user_id = $_GET['edit_user'];
 
-while($row = $post_edit->fetch_assoc()){
-                $post_id = $row['post_id'];
-                $post_title = $row['post_title'];
-                $post_author = $row['post_author'];
-                $post_category_id = $row['post_category_id'];
-                $post_status = $row['post_status'];
-                $post_image = $row['post_image'];
-                $post_tags = $row['post_tags'];
-                $post_content = $row['post_content'];
-                $post_comment_count = $row['post_comment_count'];
-                $post_date = $row['post_date'];
+    $su = $connection->prepare("SELECT * FROM users WHERE user_id=?");
+        $su->bind_param("i", $user_id);
+        $su->execute();
+        if(!$su){
+            printf("Error: %s.\n", $su->error);
+        }
 
+
+    $select_users = $su->get_result();
+
+    while($row = $select_users->fetch_assoc()){
+                    $user_id = $row['user_id'];
+                    $username = $row['username'];
+                    $user_password = $row['user_password'];
+                    $user_firstname = $row['user_firstname'];
+                    $user_lastname = $row['user_lastname'];
+                    $user_email = $row['user_email'];
+                    $user_image = $row['user_image'];
+                    $user_role = $row['user_role'];
+    }
 }
 
-if(isset($_POST['update_post'])){
 
-                $post_title = $_POST['title'];
-                $post_author = $_POST['author'];
-                $post_category_id = $_POST['post_category'];
-                $post_status = $_POST['post_status'];
-                $post_image = $_FILES['image']['name'];
-                $post_image_tmp = $_FILES['image']['tmp_name'];
-                $post_tags = $_POST['post_tags'];
-                $post_content = $_POST['post_content'];
+if(isset($_POST['edit_user'])){
+    $user_firstname = $_POST['user_firstname'];
+    $user_lastname = $_POST['user_lastname'];
+    $user_role = $_POST['user_role'];
+    $username = $_POST['username'];
+    
+    // $post_image = $_FILES['image']['name'];
+    // $post_image_temp = $_FILES['image']['tmp_name'];
+    
+    //$post_date = date('d-m-y');
+    
+    $user_email = $_POST['user_email'];
+    $user_password = $_POST['user_password'];
+    //$post_comment_count = 0;
 
-                move_uploaded_file($post_image_tmp,"../images/$post_image");
+    //move_uploaded_file($post_image_temp,"../images/$post_image");
 
-                if(empty($post_image)){
-                    $img = $connection->prepare("SELECT post_image FROM posts WHERE post_id=?");
-                    $img->bind_param("i", $edit_post_id);
-                    $img->execute();
-                    $img_file = $img->get_result();
-                    if(!$ep){
-                        printf("Error: %s.\n", $ep->error);
-                    }
-                    while($row = $img_file->fetch_assoc()){
-                    $post_image = $row['post_image'];
 
-                    }
-                }
-
-                $ap = $connection->prepare("UPDATE posts SET post_category_id=?, post_title=?, post_author=?, post_date=now(), post_image=?, post_content=?,
-       post_tags=?, post_status=? WHERE post_id = ?");
-                                $ap->bind_param("sssssssi", $post_category_id,$post_title,$post_author,$post_image,$post_content,
-                                $post_tags,$post_status,$edit_post_id);
+       $ap = $connection->prepare("INSERT INTO users(user_firstname, user_lastname, user_role, username, user_email, user_password)VALUES(?,?,?,?,?,?)");
+                                $ap->bind_param("ssssss", $user_firstname,$user_lastname,$user_role,$username,$user_email,$user_password);
                                 $ap->execute();
                                 confirmQuery($ap);
+       
+       
 
+       echo "<p class='bg-success'>User Added: " . "<a href='users.php'>View User</a></p>";
 }
 
-?>
+
+
+ ?>
+
 
 
 <form action="" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="title">Post Title</label>
-        <input type="text" class="form-control" name="title" value="<?php echo $post_title; ?>">
+        <label for="title">Firstname</label>
+        <input type="text" class="form-control" name="user_firstname" value="<?php echo $user_firstname; ?>">
     </div>
     
     <div class="form-group">
-        <label for="categories">Post Category</label>
+        <label for="categories">User Role</label>
         <select name="user_role" class="form-control" >
-        <?php
-        $query = "SELECT * FROM users";
-        $select_users = mysqli_query($connection,$query);
-         while($row = mysqli_fetch_assoc($select_users)){
-                            $user_id = $row['user_id'];
-                            $user_role = $row['user_role'];
-
-            echo "<option value='{$user_id}'>{$user_role}</option>";
-         }
-        ?>
+           <option value="subscriber"><?php echo $user_role ; ?></option>
+           <?php
+                if($user_role == 'admin'){
+                    echo "<option value='subscriber' >Subscriber</option>";
+                } else {
+                    echo "<option value='admin'>Admin</option>";
+                }
+            ?>
            
+
         </select>
     </div>
     
     <div class="form-group">
-        <label for="author">Post Author</label>
-        <input type="text" class="form-control" name="author" value="<?php echo $post_author; ?>">
+        <label for="author">Lastname</label>
+        <input type="text" class="form-control" name="user_lastname" value="<?php echo $user_lastname; ?>">
     </div>
     
     <div class="form-group">
-        <label for="post_status">Post Status</label>
-        <input type="text" class="form-control" name="post_status" value="<?php echo $post_status; ?>">
+        <label for="post_status">Username</label>
+        <input type="text" class="form-control" name="username" value="<?php echo $username; ?>">
     </div>
     
-    <div class="form-group">
-        <label for="image">Post Image</label>
-        <img width="100" src="../images/<?php echo $post_image ?>" alt="">
+    <!--<div class="form-group">
+        <label for="post_image">Post Image</label>
         <input type="file" name="image">
-    </div>
+        <p class="help-block">Select an image for the post.</p>
+    </div>-->
     
     <div class="form-group">
-        <label for="post_tags">Post Tags</label>
-        <input type="text" class="form-control" name="post_tags" value="<?php echo $post_tags; ?>">
+        <label for="post_tags">Email</label>
+        <input type="email" class="form-control" name="user_email" value="<?php echo $user_email; ?>">
+    </div>
+
+    <div class="form-group">
+        <label for="post_tags">Password</label>
+        <input type="password" class="form-control" name="user_password" value="<?php echo $user_password; ?>">
     </div>
     
-    <div class="form-group">
-        <label for="post_content">Post Content</label>
-        <textarea name="post_content" id="" cols="30" rows="10" class="form-control" >
-        <?php echo $post_content; ?>
-        </textarea>
-    </div>
+   
     
     <div class="form-group">
-        <input type="submit" class="btn btn-primary" name="update_post" value="Update Post">
+        <input type="submit" class="btn btn-primary" name="edit_user" value="Edit user">
     </div>
-</form> 
+</form>
