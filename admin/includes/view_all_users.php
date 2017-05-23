@@ -51,7 +51,7 @@
 
                             echo "<td><a href='comments.php?approve='>Approve</a></td>";
                             echo "<td><a href='comments.php?unapprove='>Unapprove</a></td>";
-                            echo "<td><a href='comments.php?delete='>Delete</a></td>";
+                            echo "<td><a href='users.php?delete=$user_id'>Delete</a></td>";
                             echo "</tr>";
 
              }
@@ -88,16 +88,16 @@ $status_comment_id = $_GET['approve'];
 }
 
 if(isset($_GET['delete'])){
-$del_comment_id = $_GET['delete'];
+$user_id = $_GET['delete'];
 
- $dpi = $connection->prepare("DELETE FROM comments WHERE comment_id=?");
-        $dpi->bind_param("i", $del_comment_id);
+ $dpi = $connection->prepare("DELETE FROM users WHERE user_id=?");
+        $dpi->bind_param("i", $user_id);
         $dpi->execute();
         if(!$dpi){
             printf("Error: %s.\n", $dpi->error);
         }
-        header('Location: comments.php');
-}
+        header('Location: users.php');
+} 
 
 
  ?>
