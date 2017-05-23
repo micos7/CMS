@@ -69,15 +69,15 @@ if(isset($_POST['update_post'])){
     
     <div class="form-group">
         <label for="categories">Post Category</label>
-        <select name="post_category" class="form-control" >
+        <select name="user_role" class="form-control" >
         <?php
-        $query = "SELECT * FROM categories";
-        $select_categories = mysqli_query($connection,$query);
-         while($row = mysqli_fetch_assoc($select_categories)){
-                            $cat_id = $row['cat_id'];
-                            $cat_title = $row['cat_title'];
+        $query = "SELECT * FROM users";
+        $select_users = mysqli_query($connection,$query);
+         while($row = mysqli_fetch_assoc($select_users)){
+                            $user_id = $row['user_id'];
+                            $user_role = $row['user_role'];
 
-            echo "<option value='{$cat_id}'>{$cat_title}</option>";
+            echo "<option value='{$user_id}'>{$user_role}</option>";
          }
         ?>
            
