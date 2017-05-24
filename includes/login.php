@@ -14,17 +14,19 @@ if(isset($_POST['login'])){
          $login_user = $uq->get_result();
 
     while($row = $login_user->fetch_assoc()){
-        $db_id = $_POST['user_id'];
-        $db_username = $_POST['username'];
-        $db_password = $_POST['password'];
-        $db_user_firstname = $_POST['user_firstname'];
-        $db_user_lastname = $_POST['user_lastname'];
-        $db_user_role = $_POST['user_role'];
+        $db_id = $row['user_id'];
+        $db_username = $row['username'];
+        $db_password = $row['user_password'];
+        $db_user_firstname = $row['user_firstname'];
+        $db_user_lastname = $row['user_lastname'];
+        $db_user_role = $row['user_role'];
     }
 
     if($username !== $db_username && $password !== $db_password){
         header('Location: ../index.php');
-    }else if ($username == $db_username && $password == $db_password){
+    }
+    
+     if ($username == $db_username && $password == $db_password){
 
         $_SESSION['username'] = $db_username;
         $_SESSION['firstname'] = $db_user_firstname;
