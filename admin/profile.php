@@ -1,6 +1,62 @@
 <?php include('includes/admin_header.php'); ?>
 <?php
-if(isset($_SESSION['username'])){
+if(isset($_SESSION['user_id'])){
+$user_id = $_SESSION['user_id'];
+
+$pr = $connection->prepare("SELECT * FROM users WHERE user_id=?");
+        $pr->bind_param("i", $user_id);
+        $pr->execute();
+        if(!$pr){
+            printf("Error: %s.\n", $pr->error);
+        }
+
+
+    $select_user = $pr->get_result();
+
+    while($row = $select_user->fetch_assoc()){
+                    //$user_id = $row['user_id'];
+                    $username = $row['username'];
+                    $user_password = $row['user_password'];
+                    $user_firstname = $row['user_firstname'];
+                    $user_lastname = $row['user_lastname'];
+                    $user_email = $row['user_email'];
+                    $user_image = $row['user_image'];
+                    $user_role = $row['user_role'];
+    }
+
+}
+
+if(isset($_POST['edit_user'])){
+
+    //todo refactor to search for user_id from SESSION
+    $user_firstname = $_POST['user_firstname'];
+    $user_lastname = $_POST['user_lastname'];
+    $user_role = $_POST['user_role'];
+    $username = $_POST['username'];
+    
+    // $post_image = $_FILES['image']['name'];
+    // $post_image_temp = $_FILES['image']['tmp_name'];
+    
+    //$post_date = date('d-m-y');
+    
+    $user_email = $_POST['user_email'];
+    $user_password = $_POST['user_password'];
+    //$post_comment_count = 0;
+
+    //move_uploaded_file($post_image_temp,"../images/$post_image");
+
+
+
+
+        $dpi = $connection->prepare("UPDATE  users SET user_firstname =?,user_lastname=?,user_role=?,username=?,user_email=?,user_password =?
+          WHERE user_id=?");
+           $dpi->bind_param("ssssssi", $user_firstname,$user_lastname,$user_role,$username,$user_email,$user_password,$user_id);
+        $dpi->execute();
+        if(!$dpi){
+            printf("Error: %s.\n", $dpi->error);
+        }
+       
+       
 
 }
 
@@ -73,7 +129,7 @@ if(isset($_SESSION['username'])){
    
     
     <div class="form-group">
-        <input type="submit" class="btn btn-primary" name="edit_user" value="Edit user">
+        <input type="submit" class="btn btn-primary" name="edit_user" value="Update profile">
     </div>
 </form>
     
