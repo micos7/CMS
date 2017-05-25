@@ -151,6 +151,64 @@
 </div>
                 <!-- /.row -->
 
+                <?php
+                
+                        $query = "SELECT * FROM posts WHERE post_status = 'published' ";
+                        $select_all_published_posts = mysqli_query($connection, $query);
+                        $published_post_count = mysqli_num_rows($select_all_published_posts);
+                
+                
+                        $query = "SELECT * FROM posts WHERE post_status = 'draft' ";
+                        $select_all_draft_posts = mysqli_query($connection, $query);
+                        $draft_post_count = mysqli_num_rows($select_all_draft_posts);
+                
+                        $query = "SELECT * FROM comments WHERE comment_status = 'unapproved' ";
+                        $unapproved_comment_query = mysqli_query($connection, $query);
+                        $unapproved_comment_count = mysqli_num_rows($unapproved_comment_query);
+                        
+                        $query = "SELECT * FROM users WHERE user_role = 'subscriber' ";
+                        $select_subscribers = mysqli_query($connection, $query);
+                        $subscriber_count = mysqli_num_rows($select_subscribers);
+                
+                
+                 ?>
+
+                <div class="row">
+                <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Data', 'Count'],
+          <?php
+            $element_text = ['All Posts', 'Active Posts', 'Draft Posts', 'Comments','Unapproved Comments', 'Users', 'Subscribers', 'Categories'];
+            $element_count = [$post_count, $published_post_count, $draft_post_count, $comment_count,$unapproved_comment_count, $user_count, $subscriber_count, $category_count];
+            
+            for($i=0;$i<count($element_text); $i++){
+                
+                echo "['{$element_text[$i]}',{$element_count[$i]}],";
+            }
+          
+           ?>
+        ]);
+
+        var options = {
+          chart: {
+            title: '',
+            subtitle: '',
+          }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      }
+    </script>
+
+    <div id="columnchart_material" style="width: auto; height: 500px;"></div>
+                </div>
+
             </div>
             <!-- /.container-fluid -->
 
