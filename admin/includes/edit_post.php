@@ -56,6 +56,8 @@ if(isset($_POST['update_post'])){
                                 $ap->execute();
                                 confirmQuery($ap);
 
+           echo "<p class='bg-success'>Post Updated: " . "<a href='../post.php?p_id=$post_id'>View Post</a> or <a href='posts.php'>Edit posts</a></p>";     
+
 }
 
 ?>
