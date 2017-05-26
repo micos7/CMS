@@ -27,10 +27,7 @@
                     $post_content = substr($row['post_content'],0,100);
                     $post_tags = $row['post_tags'];
 
-                    if($row['post_status'] !== 'published'){
-
-                        echo"<h1>No post here,sorry!</h1>";
-                    } else {
+                    if($row['post_status'] == 'published'){
                 
                 ?>
 
