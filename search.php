@@ -21,7 +21,6 @@
                     $stmt->execute();
                     $result = $stmt->get_result();
                     $stmt->close();
-                    mysqli_close($connection); 
                     if($result->num_rows == 0){
                         echo "<h1>No results!</h1>";
                     }else{
