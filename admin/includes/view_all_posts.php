@@ -1,6 +1,66 @@
+ <?php
+ if(isset($_POST['checkBoxArray'])){
+     foreach($_POST['checkBoxArray'] as $postValueId){
+         
+      $bulk_options =   $_POST['bulkOptions'];
+
+      switch ($bulk_options) {
+        case 'publish':
+            $pp= $connection->prepare("UPDATE posts set post_status=? WHERE post_id=?");
+                    $pp->bind_param("si",$bulk_options, $postValueId);
+                    $pp->execute();
+                    if(!$pp){
+                        printf("Error: %s.\n", $pp->error);
+                    }
+              break;
+        case 'draft':
+              $pp= $connection->prepare("UPDATE posts set post_status=? WHERE post_id=?");
+                    $pp->bind_param("si",$bulk_options, $postValueId);
+                    $pp->execute();
+                    if(!$pp){
+                        printf("Error: %s.\n", $pp->error);
+                    }
+              break;
+        case 'delete':
+              $pp= $connection->prepare("DELETE FROM  posts WHERE post_id=?");
+                    $pp->bind_param("i", $postValueId);
+                    $pp->execute();
+                    if(!$pp){
+                        printf("Error: %s.\n", $pp->error);
+                    }
+              break;
+          default:
+              # code...
+              break;
+      
+     }
+ }
+ }
+ 
+  ?>
+ 
+ 
+ 
+ <form action="" method="post">
+     
+ 
  <table class="table table-bordered table-hover">
+
+ <div id="bulkOptionsContainer" class="col-xs-4">
+ <select class="form-control" name="bulkOptions">
+     <option value="">Select options</option>
+     <option value="publish">Publish</option>
+     <option value="draft">Draft</option>
+     <option value="delete">Delete</option>
+ </select>
+ </div>
+ <div class="col-xs-4">
+ <input type="submit" name="submit" value="Apply" class="btn btn-success">
+ <a class="btn btn-primary" href="add_post.php">Add new</a>
+ </div>
                             <thead>
                                 <tr>
+                                    <th><input type="checkbox" name="" id="selectAllBoxes"></th>
                                     <th>Id</th>
                                     <th>Title</th>
                                     <th>Author</th>
@@ -32,6 +92,7 @@
                             $post_date = $row['post_date'];
 
                             echo "<tr>";
+                            echo "<td><input type='checkbox' class='checkBoxes' name='checkBoxArray[]' value='$post_id'></td>";
                             echo "<td>$post_id </td>";
                             echo "<td>$post_title </td>";
                             echo "<td>$post_author </td>";
@@ -42,7 +103,7 @@
                     $ct->execute();
                     $post_ct = $ct->get_result();
                     if(!$ct){
-                        printf("Error: %s.\n", $ep->error);
+                        printf("Error: %s.\n", $ct->error);
                     }
                      
                     while($row = $post_ct->fetch_assoc()){
@@ -79,6 +140,7 @@
                                 </td>
                             </tbody>
                         </table>
+                </form>
 
 <?php
 
