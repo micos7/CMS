@@ -67,26 +67,40 @@
                  <!-- Blog Comments -->
                  <?php
                  if(isset($_POST['create_comment'])){
-                      $post_id = $_GET['p_id'];
+                     $post_id = $_GET['p_id'];
 
                     $comment_author = $_POST['comment_author'];
                     $comment_email = $_POST['comment_email'];
                     $comment_content = $_POST['comment_content'];
                     $comment_status = 'unapproved';
 
-                      $pc = $connection->prepare("INSERT INTO comments(comment_post_id, comment_author,comment_email, comment_content,
-       comment_status,comment_date)VALUES(?,?, ?,?,?,now())");
-                                $pc->bind_param("issss", $post_id,$comment_author,$comment_email,$comment_content,$comment_status);
-                                $pc->execute();
 
-                                //todo decrement when deleting comments
-                    $uc = $connection->prepare("UPDATE posts  SET post_comment_count=post_comment_count+1 WHERE post_id=? ");
-                        $uc->bind_param("i", $post_id);
-                        $uc->execute();
-                        if(!$uc){
-                            printf("Error: %s.\n", $uc->error);
+                    if(!empty($comment_author) && !empty($comment_email)  && !empty($comment_content)){
+
+                    $pc = $connection->prepare("INSERT INTO comments(comment_post_id, comment_author,comment_email, comment_content,
+    comment_status,comment_date)VALUES(?,?, ?,?,?,now())");
+                            $pc->bind_param("issss", $post_id,$comment_author,$comment_email,$comment_content,$comment_status);
+                            $pc->execute();
+
+                            //todo decrement when deleting comments
+                $uc = $connection->prepare("UPDATE posts  SET post_comment_count=post_comment_count+1 WHERE post_id=? ");
+                    $uc->bind_param("i", $post_id);
+                    $uc->execute();
+                    if(!$uc){
+                        printf("Error: %s.\n", $uc->error);
                         }        
    
+
+                    } else {
+                        echo "<script>alert('Comment fields cannnot be empty!')</script>";
+                    }
+
+
+
+
+                      
+
+                      
 
                  }
                  
