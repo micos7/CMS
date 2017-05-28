@@ -18,10 +18,12 @@
             $query = "SELECT randSalt FROM users";
         $rand_salt = mysqli_query($connection,$query);
 
-        while($row = mysqli_fetch_assoc($rand_salt)){
+        $row = mysqli_fetch_array($rand_salt);
                 $salt = $row['randSalt'];
+                
+        
+        $password = crypt($password,$salt);
 
-        }
             $ap = $connection->prepare("INSERT INTO users(username, user_email, user_password,user_role)VALUES(?,?,?,?)");
                                 $ap->bind_param("ssss", $username,$email,$password,$subscriber_role);
                                 $ap->execute();
