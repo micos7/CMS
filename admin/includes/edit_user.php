@@ -21,9 +21,9 @@ if(isset($_GET['edit_user'])){
                     $user_email = $row['user_email'];
                     $user_image = $row['user_image'];
                     $user_role = $row['user_role'];
+                    $salt = $row['randSalt'];
     }
 }
-
 
 if(isset($_POST['edit_user'])){
     $user_firstname = $_POST['user_firstname'];
@@ -43,11 +43,11 @@ if(isset($_POST['edit_user'])){
     //move_uploaded_file($post_image_temp,"../images/$post_image");
 
 
-
+    $hash_password = crypt($user_password,$salt);
 
         $dpi = $connection->prepare("UPDATE  users SET user_firstname =?,user_lastname=?,user_role=?,username=?,user_email=?,user_password =?
           WHERE user_id=?");
-           $dpi->bind_param("ssssssi", $user_firstname,$user_lastname,$user_role,$username,$user_email,$user_password,$user_id);
+           $dpi->bind_param("ssssssi", $user_firstname,$user_lastname,$user_role,$username,$user_email,$hash_password,$user_id);
         $dpi->execute();
         if(!$dpi){
             printf("Error: %s.\n", $dpi->error);
