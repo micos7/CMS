@@ -16,7 +16,7 @@
             <?php 
 
             
-                $query = "SELECT * FROM posts WHERE post_status='published' ";
+                $query = "SELECT * FROM posts WHERE post_status='publish' ";
                 $select_all_posts = mysqli_query($connection,$query);
 
                 while($row = mysqli_fetch_assoc($select_all_posts)){
@@ -28,7 +28,7 @@
                     $post_content = substr($row['post_content'],0,100);
                     $post_tags = $row['post_tags'];
 
-                    if($row['post_status'] == 'published'){
+                    if($row['post_status'] == 'publish'){
                 
                 ?>
 
@@ -42,7 +42,7 @@
                     <a href="post.php?p_id=<?php echo $post_id; ?>"><?php echo $post_title; ?></a>
                 </h2>
                 <p class="lead">
-                    by <a href="index.php"><?php echo $post_author; ?></a>
+                    by <a href="author_posts.php?author=<?php echo $post_author; ?>&p_id=<?php echo $post_id; ?>"><?php echo $post_author; ?></a>
                 </p>
                 <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date; ?></p>
                 <hr>

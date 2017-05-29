@@ -16,11 +16,12 @@
             <?php 
 
             if(isset($_GET['p_id'])){
-                $post_id = $_GET['p_id'];
+                $post_id    = $_GET['p_id'];
+                $post_auth  = $_GET['author'];
             }
 
-            $ip = $connection->prepare("SELECT * FROM posts WHERE post_id=?");
-                                $ip->bind_param("s", $post_id);
+            $ip = $connection->prepare("SELECT * FROM posts WHERE post_author=?");
+                                $ip->bind_param("s", $post_auth);
                                 $ip->execute();
                                 $post_val = $ip->get_result();
                                 if(!$ip){
@@ -49,7 +50,7 @@
                     <a href="#"><?php echo $post_title; ?></a>
                 </h2>
                 <p class="lead">
-                    by <a href="index.php"><?php echo $post_author; ?></a>
+                    All posts by <?php echo $post_author; ?>
                 </p>
                 <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date; ?></p>
                 <hr>
@@ -102,69 +103,7 @@
                  
                  ?>
 
-                <!-- Comments Form -->
-                <div class="well">
-                    <h4>Leave a Comment:</h4>
-                    <form role="form" method="post">
-                        <div class="form-group">
-                            <label for="comment_author">Author</label>
-                            <input type="text" class="form-control" id="comment_author" name="comment_author" value="">
-                        </div>
-                        <div class="form-group">
-                            <label for="comment_email">Email</label>
-                            <input type="email" class="form-control" id="comment_email" name="comment_email" value="">
-                        </div>
-                        <div class="form-group">
-                            <label for="comment_content">Your comment</label>
-                            <textarea class="form-control" id="comment_content" rows="3" name="comment_content"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary" name="create_comment">Submit</button>
-                    </form>
-                </div>
 
-                <hr>
-
-                <!-- Posted Comments -->
-
-                <?php 
-                $ct = $connection->prepare("SELECT * FROM comments WHERE comment_post_id=? AND comment_status = 'approved' ORDER BY comment_id DESC");
-                    $ct->bind_param("i", $post_id);
-                    $ct->execute();
-                    $post_ct = $ct->get_result();
-                    if(!$ct){
-                        printf("Error: %s.\n", $ep->error);
-                    }
-                     
-                    while($row = $post_ct->fetch_assoc()){
-                        $comment_author = $row['comment_author'];
-                        $comment_content = $row['comment_content'];
-                        $comment_date = $row['comment_date'];
-                    
-                
-                ?>
-
-                <!-- Comment -->
-                <div class="media">
-                    <a class="pull-left" href="#">
-                        <img class="media-object" src="http://placehold.it/64x64" alt="">
-                    </a>
-                    <div class="media-body">
-                        <h4 class="media-heading"><?php echo $comment_author; ?>
-                            <small><?php echo $comment_date; ?></small>
-                        </h4>
-                       <?php echo $comment_content; ?>
-                    </div>
-                </div>
-
-          
-
-            
-
-
-
-
-
-                    <?php } ?>
 
                 </div>
 
