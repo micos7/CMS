@@ -144,17 +144,17 @@
 
 
 
-                            echo "<td>$cat_title </td>";
-                            echo "<td>$post_status </td>";
-                            echo "<td><img width='100' src='../images/$post_image'> </td>";
-                            echo "<td>$post_tags </td>";
-                            echo "<td>$post_comment_count </td>";
-                            echo "<td>$post_date </td>";
-                            echo "<td><a href='../post.php?p_id=$post_id'>View post</a></td>";
-                            echo "<td><a href='posts.php?source=edit_post&p_id=$post_id'>Edit</a></td>";
-                            echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete this post?');\"  href='posts.php?delete=$post_id'>Delete</a></td>";
-                            echo "<td class='text-center'>$post_views_count </td>";
-                            echo "</tr>";
+            echo "<td>$cat_title </td>";
+            echo "<td>$post_status </td>";
+            echo "<td><img width='100' src='../images/$post_image'> </td>";
+            echo "<td>$post_tags </td>";
+            echo "<td>$post_comment_count </td>";
+            echo "<td>$post_date </td>";
+            echo "<td><a href='../post.php?p_id=$post_id'>View post</a></td>";
+            echo "<td><a href='posts.php?source=edit_post&p_id=$post_id'>Edit</a></td>";
+            echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete this post?');\"  href='posts.php?delete=$post_id'>Delete</a></td>";
+            echo "<td class='text-center'><a href='posts.php?reset=$post_id'>{$post_views_count}</a></td>";
+            echo "</tr>";
 
             }
             ?>
@@ -185,6 +185,18 @@ $del_post_id = $_GET['delete'];
 
  $dpi = $connection->prepare("DELETE FROM posts WHERE post_id=?");
         $dpi->bind_param("i", $del_post_id);
+        $dpi->execute();
+        if(!$dpi){
+            printf("Error: %s.\n", $dpi->error);
+        }
+        header('Location: posts.php');
+}
+
+if(isset($_GET['reset'])){
+$reset_post_id = $_GET['reset'];
+
+ $dpi = $connection->prepare("UPDATE  posts set post_views_count =0 WHERE post_id=?");
+        $dpi->bind_param("i", $reset_post_id);
         $dpi->execute();
         if(!$dpi){
             printf("Error: %s.\n", $dpi->error);
