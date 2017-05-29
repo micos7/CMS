@@ -29,6 +29,32 @@
                         printf("Error: %s.\n", $pp->error);
                     }
               break;
+        case 'clone':
+              $pp= $connection->prepare("SELECT * FROM  posts WHERE post_id=?");
+                    $pp->bind_param("i", $postValueId);
+                    $pp->execute();
+                    if(!$pp){
+                        printf("Error: %s.\n", $pp->error);
+                    }
+                    $select_post = $pp->get_result();
+                    while($row = $select_post->fetch_assoc()){
+                            $post_id = $row['post_id'];
+                            $post_title = $row['post_title'];
+                            $post_author = $row['post_author'];
+                            $post_category_id = $row['post_category_id'];
+                            $post_status = $row['post_status'];
+                            $post_image = $row['post_image'];
+                            $post_tags = $row['post_tags'];
+                            $post_comment_count = $row['post_comment_count'];
+                            $post_date = $row['post_date'];
+                            $post_content = $row['post_content'];
+                    }
+                  $ap = $connection->prepare("INSERT INTO posts(post_category_id, post_title, post_author, post_date, post_image, post_content,
+       post_tags, post_status)VALUES(?,?,?,now(), ?,?,?,?)");
+                                $ap->bind_param("sssssss", $post_category_id,$post_title,$post_author,$post_image,$post_content,
+                                $post_tags,$post_status);
+                                $ap->execute();    
+              break;
           default:
               # code...
               break;
@@ -52,6 +78,7 @@
      <option value="publish">Publish</option>
      <option value="draft">Draft</option>
      <option value="delete">Delete</option>
+     <option value="clone">Clone</option>
  </select>
  </div>
  <div class="col-xs-4">
@@ -78,7 +105,7 @@
                             <tbody>
                             <?php
 
-            $query = "SELECT * FROM posts";
+            $query = "SELECT * FROM posts ORDER BY post_id DESC";
             $select_posts = mysqli_query($connection,$query);
 
             while($row = mysqli_fetch_assoc($select_posts)){
