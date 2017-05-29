@@ -17,7 +17,11 @@
 
             if(isset($_GET['p_id'])){
                 $post_id = $_GET['p_id'];
-            }
+
+                $vc = $connection->prepare("UPDATE posts SET post_views_count = post_views_count+1  WHERE post_id=?");
+                    $vc->bind_param("i", $post_id);
+                    $vc->execute();
+            
 
             $ip = $connection->prepare("SELECT * FROM posts WHERE post_id=?");
                                 $ip->bind_param("s", $post_id);
@@ -60,7 +64,17 @@
 
                 <hr>
 
-                <?php } ?>
+                <?php
+                
+                 } 
+                 } else {
+                     header('Location: index.php');
+                 }
+                
+                
+                
+                
+                 ?>
 
 
 
