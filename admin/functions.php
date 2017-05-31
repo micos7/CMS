@@ -58,10 +58,16 @@ function deleteCategories(){
 }
 
 function users_online(){
-    global $connection;
+    if(isset($_GET['onlineusers'])){
+        global $connection;
+        if(!$connection){
+
+            session_start();
+           include('../includes/db.php');
+
     $session =session_id();
     $time = time();
-    $timeout_secs = 30;
+    $timeout_secs = 5; 
     $timeout = $time - $timeout_secs;
 
     $se = $connection->prepare("SELECT * FROM users_online WHERE session=?");
@@ -90,5 +96,11 @@ function users_online(){
         $uo->bind_param("i",$timeout);
         $uo->execute();
         $uo->store_result();
-        return $users_online = $uo->num_rows;
+        echo $users_online = $uo->num_rows;
+        }
+    
+
+    } 
 }
+
+users_online();
