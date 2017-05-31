@@ -1,41 +1,6 @@
 <?php include('includes/admin_header.php'); ?>
 
     <div id="wrapper">
-    <?php 
-    
-    $session =session_id();
-    $time = time();
-    $timeout_secs = 30;
-    $timeout = $time - $timeout_secs;
-
-    $se = $connection->prepare("SELECT * FROM users_online WHERE session=?");
-        $se->bind_param("s", $session);
-        $se->execute();
-        $se->store_result();
-        if(!$se){
-            printf("Error: %s.\n", $se->error);
-        }
-
-
-
-    $count = $se->num_rows;
-
-    if($count == NULL){
-        $si = $connection->prepare("INSERT INTO  users_online(`session`,`time`) VALUES(?,?)");
-        $si->bind_param("si", $session,$time);
-        $si->execute();
-    }else{
-        $si = $connection->prepare("UPDATE users_online SET `time`=? WHERE session=?");
-        $si->bind_param("ss",$time,$session);
-        $si->execute();
-    }
-
-        $uo = $connection->prepare("SELECT id FROM users_online  WHERE `time` > ?");
-        $uo->bind_param("i",$timeout);
-        $uo->execute();
-        $uo->store_result();
-        $users_online = $uo->num_rows;
-    ?>
 
         <!-- Navigation -->
         <?php include('includes/admin_navigation.php'); ?>
@@ -48,7 +13,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Welcome to admin <?php echo $users_online; ?>
+                            Welcome to admin 
                             <small><?php echo $_SESSION['username']; ?></small>
                         </h1>
     
