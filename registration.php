@@ -13,16 +13,13 @@
         $password = $_POST['password'];
         $subscriber_role = 'subscriber';
 
+        
         if(!empty($username) && !empty($email) && !empty($password)){
 
-            $query = "SELECT randSalt FROM users";
-        $rand_salt = mysqli_query($connection,$query);
+            $password = password_hash($password,PASSWORD_BCRYPT,array('cost'=> 10));
 
-        $row = mysqli_fetch_array($rand_salt);
-                $salt = $row['randSalt'];
-                
-        
-        $password = crypt($password,$salt);
+
+
 
             $ap = $connection->prepare("INSERT INTO users(username, user_email, user_password,user_role)VALUES(?,?,?,?)");
                                 $ap->bind_param("ssss", $username,$email,$password,$subscriber_role);

@@ -25,7 +25,7 @@ function loadUsersOnline(){
         $(".usersonline").text(data);
     });
 }
-
+//todo on some pages it doenst display users
 setInterval(function(){
 loadUsersOnline();
 },700);
