@@ -1,5 +1,5 @@
 <?php
-if(isset($_GET['edit_user'])){
+if(isset($_GET['edit_user']) && !empty($_GET['edit_user']) ){
     $user_id = $_GET['edit_user'];
 
     $su = $connection->prepare("SELECT * FROM users WHERE user_id=?");
@@ -23,7 +23,7 @@ if(isset($_GET['edit_user'])){
                     $user_role = $row['user_role'];
 
     }
-}
+
 
 if(isset($_POST['edit_user'])){
     $user_firstname = $_POST['user_firstname'];
@@ -56,7 +56,9 @@ $hash_password = password_hash($user_password,PASSWORD_BCRYPT,array('cost'=> 10)
 }
 
 
-
+}else{
+    header('Location: index.php');
+}
  ?>
 
 
