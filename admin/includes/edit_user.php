@@ -15,13 +15,13 @@ if(isset($_GET['edit_user'])){
     while($row = $select_users->fetch_assoc()){
                     $user_id = $row['user_id'];
                     $username = $row['username'];
-                    $user_password = $row['user_password'];
+                    $db_user_password = $row['user_password'];
                     $user_firstname = $row['user_firstname'];
                     $user_lastname = $row['user_lastname'];
                     $user_email = $row['user_email'];
                     $user_image = $row['user_image'];
                     $user_role = $row['user_role'];
-                    $salt = $row['randSalt'];
+
     }
 }
 
@@ -31,19 +31,16 @@ if(isset($_POST['edit_user'])){
     $user_role = $_POST['user_role'];
     $username = $_POST['username'];
     
-    // $post_image = $_FILES['image']['name'];
-    // $post_image_temp = $_FILES['image']['tmp_name'];
-    
-    //$post_date = date('d-m-y');
-    
     $user_email = $_POST['user_email'];
     $user_password = $_POST['user_password'];
-    //$post_comment_count = 0;
-
-    //move_uploaded_file($post_image_temp,"../images/$post_image");
 
 
-    $hash_password = crypt($user_password,$salt);
+if($user_password != $db_user_password){
+    
+$hash_password = password_hash($user_password,PASSWORD_BCRYPT,array('cost'=> 10));
+}else{
+    $hash_password = $user_password;
+}
 
         $dpi = $connection->prepare("UPDATE  users SET user_firstname =?,user_lastname=?,user_role=?,username=?,user_email=?,user_password =?
           WHERE user_id=?");
@@ -109,7 +106,7 @@ if(isset($_POST['edit_user'])){
 
     <div class="form-group">
         <label for="post_tags">Password</label>
-        <input type="password" class="form-control" name="user_password" value="<?php echo $user_password; ?>">
+        <input type="password" class="form-control" name="user_password" value="<?php echo $db_user_password; ?>">
     </div>
     
    
