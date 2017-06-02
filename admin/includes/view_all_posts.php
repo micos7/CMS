@@ -152,12 +152,18 @@
              $cc = $connection->prepare("SELECT comment_id FROM comments WHERE comment_post_id=? ");
                     $cc->bind_param("i", $post_id);
                     $cc->execute();
+                    $cc->bind_result($comment_id);
                     $cc->store_result();
                     $post_comment_count = $cc->num_rows;
+                    
+                    
+                    $cc->fetch();
+
+                
                     if(!$cc){
                         printf("Error: %s.\n", $cc->error);
                         }        
-            echo "<td>$post_comment_count </td>";
+            echo "<td><a href='post_comments.php?id=$post_id'>$post_comment_count</a> </td>";
             echo "<td>$post_date </td>";
             echo "<td><a href='../post.php?p_id=$post_id'>View post</a></td>";
             echo "<td><a href='posts.php?source=edit_post&p_id=$post_id'>Edit</a></td>";
