@@ -66,15 +66,15 @@
                             echo "<td>$comment_status </td>";
 
 
-                    $ct = $connection->prepare("SELECT * FROM posts WHERE post_id=?");
-                    $ct->bind_param("i", $comment_post_id);
-                    $ct->execute();
-                    $post_ct = $ct->get_result();
-                    if(!$ct){
-                        printf("Error: %s.\n", $ep->error);
+                    $pd = $connection->prepare("SELECT * FROM posts WHERE post_id=?");
+                    $pd->bind_param("i", $comment_post_id);
+                    $pd->execute();
+                    $post_d = $pd->get_result();
+                    if(!$pd){
+                        printf("Error: %s.\n", $pd->error);
                     }
                      
-                    while($row = $post_ct->fetch_assoc()){
+                    while($row = $post_d->fetch_assoc()){
                         $post_id = $row['post_id'];
                         $post_title = $row['post_title'];
                     }
