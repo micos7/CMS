@@ -97,12 +97,12 @@
                             $pc->execute();
 
                             //todo decrement when deleting comments
-                $uc = $connection->prepare("UPDATE posts  SET post_comment_count=post_comment_count+1 WHERE post_id=? ");
-                    $uc->bind_param("i", $post_id);
-                    $uc->execute();
-                    if(!$uc){
-                        printf("Error: %s.\n", $uc->error);
-                        }        
+                // $uc = $connection->prepare("UPDATE posts  SET post_comment_count=post_comment_count+1 WHERE post_id=? ");
+                //     $uc->bind_param("i", $post_id);
+                //     $uc->execute();
+                //     if(!$uc){
+                //         printf("Error: %s.\n", $uc->error);
+                //         }        
    
 
                     } else {
