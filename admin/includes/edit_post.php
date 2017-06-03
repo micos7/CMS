@@ -11,7 +11,7 @@ $ep = $connection->prepare("SELECT * FROM posts WHERE post_id=?");
 while($row = $post_edit->fetch_assoc()){
                 $post_id = $row['post_id'];
                 $post_title = $row['post_title'];
-                $post_author = $row['post_author'];
+                $post_user = $row['post_user'];
                 $post_category_id = $row['post_category_id'];
                 $post_status = $row['post_status'];
                 $post_image = $row['post_image'];
@@ -25,7 +25,7 @@ while($row = $post_edit->fetch_assoc()){
 if(isset($_POST['update_post'])){
 
                 $post_title = $_POST['title'];
-                $post_author = $_POST['author'];
+                $post_user = $_POST['post_user'];
                 $post_category_id = $_POST['post_category'];
                 $post_status = $_POST['post_status'];
                 $post_image = $_FILES['image']['name'];
@@ -49,9 +49,9 @@ if(isset($_POST['update_post'])){
                     }
                 }
 
-                $ap = $connection->prepare("UPDATE posts SET post_category_id=?, post_title=?, post_author=?, post_date=now(), post_image=?, post_content=?,
+                $ap = $connection->prepare("UPDATE posts SET post_category_id=?, post_title=?, post_user=?, post_date=now(), post_image=?, post_content=?,
        post_tags=?, post_status=? WHERE post_id = ?");
-                                $ap->bind_param("sssssssi", $post_category_id,$post_title,$post_author,$post_image,$post_content,
+                                $ap->bind_param("sssssssi", $post_category_id,$post_title,$post_user,$post_image,$post_content,
                                 $post_tags,$post_status,$edit_post_id);
                                 $ap->execute();
                                 confirmQuery($ap);
@@ -86,9 +86,22 @@ if(isset($_POST['update_post'])){
         </select>
     </div>
     
-    <div class="form-group">
-        <label for="author">Post Author</label>
-        <input type="text" class="form-control" name="author" value="<?php echo $post_author; ?>">
+    <div class="form-group"> 
+        <label for="users">Users</label>
+        <select name="post_user" class="form-control" id="users" >
+        <?php echo "<option value='{$post_user}'>{$post_user}</option>"; ?>
+        <?php
+        $query = "SELECT * FROM users";
+        $select_users = mysqli_query($connection,$query);
+         while($row = mysqli_fetch_assoc($select_users)){
+                            $user_id = $row['user_id'];
+                            $username = $row['username'];
+
+            echo "<option value='{$username}'>{$username}</option>";
+         }
+        ?>
+           
+        </select>
     </div>
     
     <div class="form-group">
