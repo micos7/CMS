@@ -35,18 +35,6 @@
                             echo "<td>$user_role </td>";
 
 
-                    // $ct = $connection->prepare("SELECT * FROM posts WHERE post_id=?");
-                    // $ct->bind_param("i", $comment_post_id);
-                    // $ct->execute();
-                    // $post_ct = $ct->get_result();
-                    // if(!$ct){
-                    //     printf("Error: %s.\n", $ep->error);
-                    // }
-                     
-                    // while($row = $post_ct->fetch_assoc()){
-                    //     $post_id = $row['post_id'];
-                    //     $post_title = $row['post_title'];
-                    // }
 
 
                             echo "<td><a href='users.php?change_to_admin=$user_id'>Admin</a></td>";
@@ -89,6 +77,11 @@ $user_id = $_GET['change_to_sub'];
 }
 
 if(isset($_GET['delete'])){
+
+if(isset($_SESSION['user_role']) && $_SESSION['user_role']=='admin' ){
+
+
+
 $user_id = $_GET['delete'];
 
  $dpi = $connection->prepare("DELETE FROM users WHERE user_id=?");
@@ -98,6 +91,8 @@ $user_id = $_GET['delete'];
             printf("Error: %s.\n", $dpi->error);
         }
         header('Location: users.php');
+        }
+
 } 
 
 
