@@ -8,32 +8,10 @@
 
     <?php
     if(isset($_POST['submit'])){
-        $username = $_POST['username'];
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $subscriber_role = 'subscriber';
+        $to = 'micos7@gmail.com';
+        $subject = $_POST['subject'];
+        $body = $_POST['body'];
 
-        
-        if(!empty($username) && !empty($email) && !empty($password)){
-
-            $password = password_hash($password,PASSWORD_BCRYPT,array('cost'=> 10));
-
-
-
-
-            $ap = $connection->prepare("INSERT INTO users(username, user_email, user_password,user_role)VALUES(?,?,?,?)");
-                                $ap->bind_param("ssss", $username,$email,$password,$subscriber_role);
-                                $ap->execute();
-
-            $message ='Your registration as been submitted!';
-
-        } else {
-            $message = 'Fields cannot be empty!';
-        }
-
-        
-    } else {
-        $message = '';
     }
     
     
@@ -57,7 +35,7 @@
                         </div>
                         <div class="form-group">
                             <label for="subject" class="sr-only">Subject</label>
-                            <input type="subject" name="subject" id="subject" class="form-control" placeholder="Enter your subject">
+                            <input type="text" name="subject" id="subject" class="form-control" placeholder="Enter your subject">
                         </div> 
                          <div class="form-group">
                             <textarea class="form-control" name="body" id="body" cols="50" rows="10"></textarea>
