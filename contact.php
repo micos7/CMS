@@ -7,11 +7,15 @@
     <?php  include "includes/navigation.php"; ?>
 
     <?php
+
     if(isset($_POST['submit'])){
         $to = 'micos7@gmail.com';
         $subject = $_POST['subject'];
         $body = $_POST['body'];
+        $header ="From: ". $_POST['email'];
 
+        $body = wordwrap($body,70);
+        mail($to,$subject,$body,$header);
     }
     
     
