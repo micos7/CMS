@@ -17,8 +17,12 @@
 if(isset($_GET['category'])){
     $post_category = $_GET['category'];
 
+     if(isset($_SESSION['user_role']) && $_SESSION['user_role']== 'admin' ) {
+                $ci = $connection->prepare("SELECT * FROM posts WHERE post_id=?");
+            }else {
+                $ci = $connection->prepare("SELECT * FROM posts WHERE post_id=? AND post_status='publish' ");
+            }
 
-$ci = $connection->prepare("SELECT * FROM posts  WHERE post_category_id=? AND post_status='publish' ");
                                 $ci->bind_param("s", $post_category);
                                 $ci->execute();
                                 if($ci->num_rows < 1){
