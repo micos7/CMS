@@ -26,9 +26,12 @@
             }else{
                 $page_1 = ($page*$per_page)-$per_page;
             }
-                $post_query_count = "SELECT post_id FROM posts";
+                $post_query_count = "SELECT post_id FROM posts WHERE post_status='publish'";
                 $find_count = mysqli_query($connection,$post_query_count);
                 $count = mysqli_num_rows($find_count);
+                if($count <1){
+                    echo "<h1 class='text-center'>No posts avaiable</h1>";
+                }else {
                 $count = ceil($count/$per_page);
             
                 $query = "SELECT * FROM posts WHERE post_status='publish' LIMIT $page_1,$per_page ";
@@ -43,7 +46,7 @@
                     $post_content = substr($row['post_content'],0,100);
                     $post_tags = $row['post_tags'];
 
-                    if($row['post_status'] == 'publish'){
+
                 
                 ?>
 
