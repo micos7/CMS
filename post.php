@@ -22,10 +22,19 @@
                     $vc->bind_param("i", $post_id);
                     $vc->execute();
             
+            if(isset($_SESSION['user_role']) && $_SESSION['user_role']== 'admin' ) {
+                $ip = $connection->prepare("SELECT * FROM posts WHERE post_id=?");
+            }else {
+                $ip = $connection->prepare("SELECT * FROM posts WHERE post_id=? AND post_status='publish' ");
+            }
+            
 
-            $ip = $connection->prepare("SELECT * FROM posts WHERE post_id=?");
                                 $ip->bind_param("s", $post_id);
                                 $ip->execute();
+                                if($ip->num_rows < 1){
+
+                                    echo "<h1 class='text-center'>No posts avaiable</h1>";
+                                }else { 
                                 $post_val = $ip->get_result();
                                 if(!$ip){
                                     printf("Error: %s.\n", $ip->error);
@@ -44,8 +53,7 @@
                 ?>
 
                 <h1 class="page-header">
-                    Page Heading
-                    <small>Secondary Text</small>
+                    Posts
                 </h1>
 
                 <!-- First Blog Post -->
@@ -66,11 +74,7 @@
 
                 <?php
                 
-                 } 
-                 } else {
-                     header('Location: index.php');
-                 }
-                
+                 
                 
                 
                 
@@ -178,7 +182,16 @@
 
 
 
-                    <?php } ?>
+                    <?php }
+                    } 
+                        } } else {
+                            header('Location: index.php');
+                        }
+                
+                    
+                    
+                    
+                     ?>
 
                 </div>
 
