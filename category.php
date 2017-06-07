@@ -16,14 +16,18 @@
 
 if(isset($_GET['category'])){
     $post_category = $_GET['category'];
-}
 
-$ci = $connection->prepare("SELECT * FROM posts  WHERE post_category_id=?");
+
+$ci = $connection->prepare("SELECT * FROM posts  WHERE post_category_id=? AND post_status='publish' ");
                                 $ci->bind_param("s", $post_category);
                                 $ci->execute();
+                                if($ci->num_rows < 1){
+
+                                    echo "<h1 class='text-center'>No posts avaiable</h1>";
+                                }else {
                                 $cat_val = $ci->get_result();
                                 if(!$ci){
-                                    printf("Error: %s.\n", $ip->error);
+                                    printf("Error: %s.\n", $ci->error);
                                 }
                                 while($row = $cat_val->fetch_assoc()){
                                     $post_id = $row['post_id'];
@@ -58,7 +62,10 @@ $ci = $connection->prepare("SELECT * FROM posts  WHERE post_category_id=?");
 
                 <hr>
 
-                <?php } ?>
+                <?php } } }else {
+                
+                header('Location: index.php');
+                } ?>
 
             </div>
 
