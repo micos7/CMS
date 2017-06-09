@@ -43,6 +43,7 @@
                             $post_id = $row['post_id'];
                             $post_title = $row['post_title'];
                             $post_author = $row['post_author'];
+                            $post_user = $row['post_user'];
                             $post_category_id = $row['post_category_id'];
                             $post_status = $row['post_status'];
                             $post_image = $row['post_image'];
@@ -51,9 +52,9 @@
                             $post_date = $row['post_date'];
                             $post_content = $row['post_content'];
                     }
-                  $ap = $connection->prepare("INSERT INTO posts(post_category_id, post_title, post_author, post_date, post_image, post_content,
-       post_tags, post_status)VALUES(?,?,?,now(), ?,?,?,?)");
-                                $ap->bind_param("sssssss", $post_category_id,$post_title,$post_author,$post_image,$post_content,
+                  $ap = $connection->prepare("INSERT INTO posts(post_category_id, post_title, post_author,post_user, post_date, post_image, post_content,
+       post_tags, post_status)VALUES(?,?,?,?,now(), ?,?,?,?)");
+                                $ap->bind_param("ssssssss", $post_category_id,$post_title,$post_author,$post_user,$post_image,$post_content,
                                 $post_tags,$post_status);
                                 $ap->execute();    
               break;
