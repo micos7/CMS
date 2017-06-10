@@ -33,15 +33,9 @@
                     </div>
                     <div class="col-xs-9 text-right">
 
-                    <?php
 
-                    $query = "SELECT post_id FROM posts  ";
-                    $count_all_posts = mysqli_query($connection,$query);
-                    $post_count = mysqli_num_rows($count_all_posts);
 
-                    ?>
-
-                  <div class='huge'><?php echo $post_count; ?></div>
+                  <div class='huge'><?php echo $post_count = recordCount('posts'); ?></div>
                         <div>Posts</div>
                     </div>
                 </div>
@@ -64,15 +58,9 @@
                     </div>
                     <div class="col-xs-9 text-right">
 
-                    <?php
+    
 
-                    $query = "SELECT comment_id FROM comments  ";
-                    $count_all_comments = mysqli_query($connection,$query);
-                    $comment_count = mysqli_num_rows($count_all_comments);
-
-                    ?>
-
-                     <div class='huge'><?php echo $comment_count; ?></div>
+                     <div class='huge'><?php echo $comment_count = recordCount('comments'); ?></div>
                       <div>Comments</div>
                     </div>
                 </div>
@@ -95,15 +83,8 @@
                     </div>
                     <div class="col-xs-9 text-right">
 
-                    <?php
 
-                    $query = "SELECT user_id FROM users  ";
-                    $count_all_users = mysqli_query($connection,$query);
-                    $user_count = mysqli_num_rows($count_all_users);
-
-                    ?>
-
-                    <div class='huge'><?php echo $user_count; ?></div>
+                    <div class='huge'><?php echo $user_count = recordCount('users'); ?></div>
                         <div> Users</div>
                     </div>
                 </div>
@@ -126,15 +107,8 @@
                     </div>
                     <div class="col-xs-9 text-right">
 
-                    <?php
 
-                    $query = "SELECT cat_id FROM categories  ";
-                    $count_all_categories = mysqli_query($connection,$query);
-                    $category_count = mysqli_num_rows($count_all_categories);
-
-                    ?>
-
-                        <div class='huge'><?php echo $category_count; ?></div>
+                        <div class='huge'><?php echo $category_count = recordCount('categories'); ?></div>
                          <div>Categories</div>
                     </div>
                 </div>

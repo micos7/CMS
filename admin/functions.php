@@ -104,3 +104,11 @@ function users_online(){
 }
 
 users_online();
+
+function recordCount($table){
+    global $connection;
+    $query = "SELECT * FROM ".$table;
+    $count_all_posts = mysqli_query($connection,$query);
+    $post_count = mysqli_num_rows($count_all_posts);
+    return $post_count;
+}
