@@ -109,7 +109,10 @@
                             <tbody>
                             <?php
 
-            $query = "SELECT * FROM posts ORDER BY post_id DESC";
+
+            $query = "SELECT  p.post_id, p.post_category_id, p.post_title, p.post_author, p.post_user, p.post_date, p.post_image, p.post_content,
+             p.post_tags, p.post_comment_count, p.post_status, p.post_views_count,c.cat_id,c.cat_title
+            FROM posts p LEFT JOIN categories c ON p.post_category_id = c.cat_id ORDER BY p.post_id DESC";
             $select_posts = mysqli_query($connection,$query);
 
             while($row = mysqli_fetch_assoc($select_posts)){
@@ -124,6 +127,8 @@
                             //$post_comment_count = $row['post_comment_count'];
                             $post_date = $row['post_date'];
                             $post_views_count = $row['post_views_count'];
+                            $cat_id = $row['cat_id'];
+                            $cat_title = $row['cat_title'];
 
                             echo "<tr>";
                             echo "<td><input type='checkbox' class='checkBoxes' name='checkBoxArray[]' value='$post_id'></td>";
@@ -136,19 +141,7 @@
                                 echo "<td>$post_user </td>";
                             }
 
-                    //TODO - change to a JOIN in the main query
-                    $ct = $connection->prepare("SELECT * FROM categories WHERE cat_id=?");
-                    $ct->bind_param("i", $post_category_id);
-                    $ct->execute();
-                    $post_ct = $ct->get_result();
-                    if(!$ct){
-                        printf("Error: %s.\n", $ct->error);
-                    }
-                     
-                    while($row = $post_ct->fetch_assoc()){
-                        $cat_id = $row['cat_id'];
-                        $cat_title = $row['cat_title'];
-                    }
+
 
 
 
