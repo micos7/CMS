@@ -112,3 +112,10 @@ function recordCount($table){
     $post_count = mysqli_num_rows($count_all_posts);
     return $post_count;
 }
+
+function checkStatus($table,$column,$status){
+    global $connection;
+    $query = "SELECT * FROM $table WHERE $column  = '$status' ";
+    $result = mysqli_query($connection, $query);
+    return mysqli_num_rows($result);
+}
