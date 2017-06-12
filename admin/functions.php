@@ -119,3 +119,23 @@ function checkStatus($table,$column,$status){
     $result = mysqli_query($connection, $query);
     return mysqli_num_rows($result);
 }
+
+function is_admin($username=''){
+    global $connection;
+    $uq = $connection->prepare("SELECT user_role FROM users  WHERE username=?");
+        $uq->bind_param("s", $username);
+        $uq->execute();
+        if(!$uq){
+            printf("Error: %s.\n", $uq->error);
+        }
+         $login_user = $uq->get_result();
+
+   $row = $login_user->fetch_assoc();
+   if($row['user_role'] == 'admin'){
+       return true;
+   }else {
+       return false;
+   }
+    
+
+}
