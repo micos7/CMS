@@ -6,6 +6,10 @@ function confirmQuery($result){
     }
 }
 
+function redirect($location){
+    return header('Location: '.$location);
+}
+
 function insert_categories(){
     global $connection;
     if(isset($_POST['submit'])){
@@ -120,7 +124,7 @@ function checkStatus($table,$column,$status){
     return mysqli_num_rows($result);
 }
 
-function is_admin($username=''){
+function is_admin($username){
     global $connection;
     $uq = $connection->prepare("SELECT user_role FROM users  WHERE username=?");
         $uq->bind_param("s", $username);
@@ -139,3 +143,68 @@ function is_admin($username=''){
     
 
 }
+
+function username_exists($username){
+     global $connection;
+    $uq = $connection->prepare("SELECT username FROM users  WHERE username=?");
+        $uq->bind_param("s", $username);
+        $uq->execute();
+        if(!$uq){
+            printf("Error: %s.\n", $uq->error);
+        }
+        $uq->store_result();
+         if($uq->num_rows > 0){
+             return true;
+         }else{
+             return false;
+         }
+}
+
+function emailexists($email){
+     global $connection;
+    $uq = $connection->prepare("SELECT user_email FROM user_email  WHERE username=?");
+        $uq->bind_param("s", $email);
+        $uq->execute();
+        if(!$uq){
+            printf("Error: %s.\n", $uq->error);
+        }
+        $uq->store_result();
+         if($uq->num_rows > 0){
+             return true;
+         }else{
+             return false;
+         }
+}
+
+function register_user($username,$email,$password){
+    global $connection;
+
+   
+
+        if(username_exists($username)){
+            $message ="User exists";
+        }
+
+        
+        if(!empty($username) && !empty($email) && !empty($password)){
+
+            $password = password_hash($password,PASSWORD_BCRYPT,array('cost'=> 10));
+
+
+
+
+            $ap = $connection->prepare("INSERT INTO users(username, user_email, user_password,user_role)VALUES(?,?,?,?)");
+                                $ap->bind_param("ssss", $username,$email,$password,$subscriber_role);
+                                $ap->execute();
+
+            $message ='Your registration as been submitted!';
+
+        } else {
+            $message = 'Fields cannot be empty!';
+        }
+
+        
+    }
+    
+
+
