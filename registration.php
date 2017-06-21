@@ -12,6 +12,39 @@
         $email = $_POST['email'];
         $password = $_POST['password'];
         $subscriber_role = 'subscriber';
+
+        $error =[
+            'username' => '',
+            'email' => '',
+            'password' => ''
+        ];
+
+        if(strlen($username) < 4){
+            $error['username'] = 'Username needs to be longer';
+        }
+
+        if($username == ''){
+            $error['username'] = 'Username cannot be empty';
+        }
+
+        if(username_exists($username)){
+            $error['username'] = 'Username already exists';
+        }
+
+        if($email == ''){
+            $error['email'] = 'Email cannot be empty';
+        }
+
+        if(emailexists($email)){
+            $error['email'] = 'Email already exists, <a href="index.php">Please login</a>';
+        }
+
+        if($password == ''){
+            $error['password'] = 'Password cannot be empty';
+        }
+
+
+
        register_user($username,$email,$password);
     }
      ?>
