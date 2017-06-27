@@ -179,14 +179,6 @@ function emailexists($email){
 function register_user($username,$email,$password){
     global $connection;
 
-   
-
-        if(username_exists($username)){
-            $message ="User exists";
-        }
-
-        
-        if(!empty($username) && !empty($email) && !empty($password)){
 
             $password = password_hash($password,PASSWORD_BCRYPT,array('cost'=> 10));
 
@@ -199,9 +191,7 @@ function register_user($username,$email,$password){
 
             $message ='Your registration as been submitted!';
 
-        } else {
-            $message = 'Fields cannot be empty!';
-        }
+   
 
         
     }

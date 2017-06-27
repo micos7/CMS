@@ -45,11 +45,14 @@
 
         foreach ($error as $key => $value) {
             if(empty($value)){
-                //register_user($username,$email,$password);
+                unset($error[$key]);
                 //login_user($username, $password);
             }
         }
 
+        if(empty($error)){
+            register_user($username,$email,$password);
+        }
 
 
        
