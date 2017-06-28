@@ -162,7 +162,7 @@ function username_exists($username){
 
 function emailexists($email){
      global $connection;
-    $uq = $connection->prepare("SELECT user_email FROM user_email  WHERE username=?");
+    $uq = $connection->prepare("SELECT user_email FROM users  WHERE user_email=?");
         $uq->bind_param("s", $email);
         $uq->execute();
         if(!$uq){
@@ -225,11 +225,11 @@ function register_user($username,$email,$password){
                 $_SESSION['lastname'] = $db_user_lastname;
                 $_SESSION['user_role'] = $db_user_role;
 
-                header('Location: ../admin');
+                header('Location: /cms/admin');
                 
             }else{
                 
-                header('Location: ../index.php');
+                header('Location: /cms/index.php');
             }
     }
     

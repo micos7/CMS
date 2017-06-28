@@ -1,5 +1,6 @@
 <?php  include "includes/db.php"; ?>
  <?php  include "includes/header.php"; ?>
+  <?php  include "admin/functions.php"; ?>
 
 
     <!-- Navigation -->
@@ -46,7 +47,7 @@
         foreach ($error as $key => $value) {
             if(empty($value)){
                 unset($error[$key]);
-                //login_user($username, $password);
+                login_user($username, $password);
             }
         }
 
