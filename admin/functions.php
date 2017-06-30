@@ -178,9 +178,9 @@ function emailexists($email){
 
 function register_user($username,$email,$password){
     global $connection;
+   $subscriber_role = 'subscriber';
 
-
-            $password = password_hash($password,PASSWORD_BCRYPT,array('cost'=> 10));
+            $password = password_hash($password,PASSWORD_DEFAULT);
 
 
 
@@ -206,6 +206,7 @@ function register_user($username,$email,$password){
                     printf("Error: %s.\n", $uq->error);
                 }
                 $login_user = $uq->get_result();
+     
 
             while($row = $login_user->fetch_assoc()){
                 $db_id = $row['user_id'];

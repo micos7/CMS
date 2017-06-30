@@ -12,7 +12,7 @@
          $username = $_POST['username'];
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $subscriber_role = 'subscriber';
+        
 
         $error =[
             'username' => '',
@@ -47,12 +47,13 @@
         foreach ($error as $key => $value) {
             if(empty($value)){
                 unset($error[$key]);
-                login_user($username, $password);
+                
             }
         }
 
         if(empty($error)){
             register_user($username,$email,$password);
+            login_user($username, $password);
         }
 
 
